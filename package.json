@@ -1,0 +1,18 @@
+{
+  "name": "hackers.nyc",
+  "type": "module",
+  "private": true,
+  "description": "CTF study group — hackers.nyc",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:smoke && npm run test:bentos && npm run test:e2e",
+    "test:unit": "node --test test/unit/*.test.mjs",
+    "test:smoke": "node test/smoke.mjs",
+    "test:bentos": "node test/bentos.mjs",
+    "test:e2e": "playwright test",
+    "encrypt-config": "node scripts/encrypt-config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "http-server": "^14.1.1"
+  }
+}

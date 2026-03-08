@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="hackers.nyc — CTF study group">
+  <title>hackers.nyc</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-scanlines" aria-hidden="true"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <header class="hud" id="hud">
+    <div class="hud-status">
+      <span class="hud-label">SYS</span>
+      <span class="hud-value">ONLINE</span>
+      <span class="hud-sep">|</span>
+      <span class="hud-label">NODE</span>
+      <span class="hud-value">hackers.nyc</span>
+      <span class="hud-sep" id="hud-uptime-sep">|</span>
+      <span class="hud-label" id="hud-uptime-label">UPTIME</span>
+      <span class="hud-value" id="uptime">00:00:00</span>
+    </div>
+    <div class="hud-timestamp" id="hud-timestamp">
+      <span class="hud-label">UTC</span>
+      <span class="hud-value" id="timestamp">--:--:--</span>
+    </div>
+    <a href="#" class="hud-back" id="hud-back" data-route="index" style="display:none;color:inherit;text-decoration:none;">cd ..</a>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title" id="hero-title">
+        <span class="terminal-prompt">$</span> <span id="hero-cmd">whoami</span>
+      </h1>
+      <p class="hero-bio" id="hero-bio">
+        <span class="cursor-blink" id="hero-cursor">_</span> <span id="hero-text">hackers.nyc — CTF CyberSheeple Home</span>
+      </p>
+      <form class="passwd-prompt" id="passwd-prompt" aria-label="Decrypt config">
+        <label class="passwd-label" for="passwd-input">
+          <span class="terminal-prompt">$</span> passwd:
+        </label>
+        <input type="password" id="passwd-input" class="passwd-input" autocomplete="current-password" placeholder="" />
+        <span class="passwd-cursor cursor-blink" id="passwd-cursor" aria-hidden="true">_</span>
+      </form>
+      <p class="passwd-error" id="passwd-error" role="alert" aria-live="polite"></p>
+    </section>
+
+    <nav class="bento" id="bento" aria-label="Links and data">
+      <!-- Populated by src/app.js -->
+    </nav>
+
+    <footer class="hud-footer" id="hud-footer">
+      <span class="hud-data">CONNECTIONS: <span id="hud-connections">0</span></span>
+      <span class="hud-sep">|</span>
+      <span class="hud-data">SEED: <span id="hud-seed">0</span></span>
+      <span class="hud-sep">|</span>
+      <span class="hud-data">PROTOCOL: HTTPS</span>
+      <span class="hud-sep">|</span>
+      <span class="hud-data flicker">SECURE</span>
+    </footer>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+  <script src="src/hud.js"></script>
+</body>
+</html>

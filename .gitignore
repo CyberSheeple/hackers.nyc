@@ -1,0 +1,5 @@
+# Dependencies
+node_modules
+
+# Plain config (encrypted output is config.json)
+src/data/secret.json

@@ -1,0 +1,24 @@
+---
+description: hackers.nyc project architecture and conventions
+alwaysApply: true
+---
+
+# hackers.nyc Project Conventions
+
+## Architecture
+
+- **Static site only** — No backend services. The site must work entirely from static files (HTML, CSS, JS, JSON). No server-side rendering, API routes, or serverless functions for core functionality.
+- **SPA** — Single-page application with client-side routing (hash-based). All navigation is in-browser; internal links must work without a server.
+
+## Secrets and Config
+
+- **secret.json** — All identifying remote hrefs, text, and clues live in `src/data/secret.json`. Formatting, structure, and layout metadata may live elsewhere.
+- **Encryption** — Encrypt with shared key via `scripts/encrypt-config.mjs` (requires `CONFIG_SECRET` env). Output: `src/data/config.json`.
+- **Encrypted mode** — The site must render and work when config is encrypted: internal links, routing, and layout function. Only sensitive content stays obscured.
+- **Decrypted mode** — When the user provides the password: run the decrypt animation, then reveal full content and work normally.
+
+## JavaScript
+
+- Follow JavaScript best practices: ES modules, clear naming, avoid globals.
+- Prefer `const`/`let`, avoid `var`.
+- Handle errors explicitly; don't swallow exceptions.
