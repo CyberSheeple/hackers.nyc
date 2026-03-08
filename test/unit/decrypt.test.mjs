@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Unit tests for src/decrypt.js
- */
-
 import { test, describe } from "node:test";
 import assert from "node:assert";
 import { decryptConfig } from "../../src/decrypt.js";
@@ -19,7 +15,7 @@ describe("decryptConfig", () => {
     const configPath = join(dirname(fileURLToPath(import.meta.url)), "../../src/data/config.json");
     const config = JSON.parse(readFileSync(configPath, "utf8"));
     if (!config?.index?.heroTitle || config.index.heroTitle.length < 40) {
-      return; // config not encrypted, skip
+      return;
     }
     await assert.rejects(
       () => decryptConfig(config, "wrong-password")

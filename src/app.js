@@ -39,7 +39,7 @@ const FRACTAL_RUNNERS = {
 
 const VALID_PAGES = [
   "index", "nodes", "patches", "cipher", "inject", "reversing", "hive", "toolz",
-  "encoding", "crypto", "web", "forensics", "stego", "network", "fuzz", "misc"
+  "encoding", "crypto", "forensics", "stego", "network", "fuzz", "misc"
 ];
 
 const BASE64_RE = /^[A-Za-z0-9+/]+=*$/;
@@ -75,6 +75,27 @@ function showPasswdError(msg) {
   }
 }
 
+function showDecryptProgress() {
+  const el = document.getElementById("decrypt-progress");
+  const fill = document.getElementById("decrypt-progress-fill");
+  if (el) el.classList.add("visible");
+  if (fill) fill.style.width = "0%";
+  if (el) el.setAttribute("aria-valuenow", "0");
+}
+
+function hideDecryptProgress() {
+  const el = document.getElementById("decrypt-progress");
+  if (el) el.classList.remove("visible");
+}
+
+function updateDecryptProgress(percent) {
+  const el = document.getElementById("decrypt-progress");
+  const fill = document.getElementById("decrypt-progress-fill");
+  const p = Math.min(100, Math.max(0, percent));
+  if (fill) fill.style.width = `${p}%`;
+  if (el) el.setAttribute("aria-valuenow", String(Math.round(p)));
+}
+
 function randomDecryptString(len, numSets) {
   let s = "";
   for (let i = 0; i < len; i++) s += getRandomCharFromSets(numSets);
@@ -104,7 +125,7 @@ function animateDecrypt(el, finalText) {
   });
 }
 
-async function runDecryptAnimation() {
+async function runDecryptAnimation(onProgress) {
   const heroCmd = document.getElementById("hero-cmd");
   const heroText = document.getElementById("hero-text");
   const targets = [
@@ -113,14 +134,19 @@ async function runDecryptAnimation() {
     ...document.querySelectorAll(".bento .card-label, .bento .card-text, .bento .card-desc, .toolz-filter-btn"),
   ].filter(Boolean);
 
-  const tasks = [];
-  for (const el of targets) {
+  const decryptTargets = targets.filter((el) => el?.textContent?.trim().length > 0);
+  const total = decryptTargets.length;
+  let completed = 0;
+
+  const tasks = decryptTargets.map((el) => {
     const text = el.textContent;
-    if (text && text.trim().length > 0) {
-      tasks.push(animateDecrypt(el, text));
-    }
-  }
+    return animateDecrypt(el, text).then(() => {
+      completed++;
+      if (onProgress && total > 0) onProgress((completed / total) * 100);
+    });
+  });
   await Promise.all(tasks);
+  if (onProgress) onProgress(100);
 }
 
 function toSeedNum(val) {
@@ -181,19 +207,6 @@ function renderCategoryCard(cat) {
   </a>`;
 }
 
-function renderToolzcatCard(cat) {
-  const href = `#${cat.id}`;
-  return `<a href="${href}" class="bento-card bento-card--nav" data-glitch data-route="${cat.id}">
-    <span class="card-corner card-corner--tl"></span>
-    <span class="card-corner card-corner--tr"></span>
-    <span class="card-corner card-corner--bl"></span>
-    <span class="card-corner card-corner--br"></span>
-    <span class="card-label">learn</span>
-    <span class="card-prefix">&gt;</span>
-    <span class="card-text">${cat.label}</span>
-  </a>`;
-}
-
 function assembleIndexGrid(config, layout) {
   const { categories } = config.index;
   const encrypted = isConfigEncrypted(config);
@@ -202,7 +215,6 @@ function assembleIndexGrid(config, layout) {
     starfield: starfieldHtml,
   };
 
-  const toolzCats = config.toolz?.categories ?? [];
   return layout
     .map((item) => {
       let content = "";
@@ -210,10 +222,6 @@ function assembleIndexGrid(config, layout) {
         const cat = categories?.[item.index];
         if (!cat) return "";
         content = renderCategoryCard(cat);
-      } else if (item.id === "toolzcat") {
-        const cat = toolzCats[item.index];
-        if (!cat || cat.id === "all") return "";
-        content = renderToolzcatCard(cat);
       } else if (item.id === "cybersheeple") {
         content = renderLink(config.index.cybersheeple, -1);
       } else if (item.id?.startsWith("fractal:")) {
@@ -353,7 +361,7 @@ function initDescBento(page, config) {
   if (!descText) return;
 
   let blocks = config?.pageCommands?.[page];
-  if ((!blocks || blocks.length === 0) && config[page]?.resourceCategory) {
+  if ((!blocks || blocks.length === 0) && ["encoding", "crypto", "forensics", "stego", "network", "fuzz", "misc"].includes(page)) {
     blocks = config?.pageCommands?.toolz;
   }
   if (!blocks || blocks.length === 0) return;
@@ -460,20 +468,11 @@ function initNav(config) {
   });
 }
 
-function resolvePageConfig(config, page) {
-  const pageConfig = config[page];
-  if (!pageConfig) return null;
-  const resourceCat = pageConfig.resourceCategory;
-  if (!resourceCat || !config.resources?.[resourceCat]) return pageConfig;
-  const links = config.resources[resourceCat].links ?? [];
-  return { ...pageConfig, links };
-}
-
 function render(config, page) {
   const bentoEl = document.getElementById("bento");
   if (!bentoEl) return;
 
-  const pageConfig = resolvePageConfig(config, page);
+  const pageConfig = config[page];
   if (!pageConfig) return;
 
   updateShell(page, pageConfig);
@@ -523,7 +522,9 @@ async function init() {
     hidePasswdPrompt();
     const page = getPageFromRoute();
     render(decConfig, page);
-    await runDecryptAnimation();
+    await runDecryptAnimation((p) => updateDecryptProgress(15 + (p / 100) * 85));
+    updateDecryptProgress(100);
+    setTimeout(hideDecryptProgress, 300);
   }
 
   if (encrypted) {
@@ -536,10 +537,22 @@ async function init() {
         const password = input.value;
         if (!password) return;
         showPasswdError("");
+        showDecryptProgress();
+        let progressInterval = null;
+        let progress = 0;
+        progressInterval = setInterval(() => {
+          progress = Math.min(15, progress + 1.5);
+          updateDecryptProgress(progress);
+          if (progress >= 15) clearInterval(progressInterval);
+        }, 100);
         try {
           const dec = await decryptConfig(config, password);
+          if (progressInterval) clearInterval(progressInterval);
+          updateDecryptProgress(15);
           await onDecrypted(dec);
         } catch (err) {
+          if (progressInterval) clearInterval(progressInterval);
+          hideDecryptProgress();
           showPasswdError("Access denied.");
         }
       });

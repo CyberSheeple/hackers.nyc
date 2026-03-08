@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Unit tests for src/bentos/anims/index.js
- */
-
 import { test, describe } from "node:test";
 import assert from "node:assert";
 import { ANIM_TYPES } from "../../src/bentos/anims/index.js";

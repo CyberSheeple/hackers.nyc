@@ -1,7 +1,3 @@
-/**
- * E2E smoke tests — verify the SPA loads and core flows work
- */
-
 const { test, expect } = require("@playwright/test");
 
 test.describe("SPA smoke", () => {

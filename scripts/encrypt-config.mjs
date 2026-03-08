@@ -1,22 +1,4 @@
 #!/usr/bin/env node
-/**
- * Encrypt secret.json → config.json
- *
- * Uses AES-256-GCM. All string values are encrypted except: id, route, href when it starts with "#", and href when parent has internal:true or hrefEncrypt:false.
- * Keys remain unencrypted. Output is valid JSON with UTF-8 encoded ciphertext (CJK + emoji, no control chars).
- *
- * Ciphertext format: encode(iv || ciphertext || authTag)
- *   iv: 12 bytes, ciphertext: variable, authTag: 16 bytes
- *
- * Key derivation: PBKDF2-SHA256, 600k iterations, salt "hackers.nyc-config-salt"
- *
- * Usage:
- *   CONFIG_SECRET=your-32-byte-key node scripts/encrypt-config.mjs
- *   npm run encrypt-config  # requires CONFIG_SECRET in env
- *
- * Output: src/data/config.json
- */
-
 import { createCipheriv, randomBytes, pbkdf2Sync } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";

@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Unit tests for src/bentos/anims/fractal.js
- */
-
 import { test, describe } from "node:test";
 import assert from "node:assert";
 import { html } from "../../src/bentos/anims/fractal.js";

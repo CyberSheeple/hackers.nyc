@@ -1,7 +1,3 @@
-/**
- * Fractal bento — canvas placeholder for subpage fractals
- */
-
 export function html(type) {
   return `
     <div class="bento-card bento-card--fractal" title="Click to restart">

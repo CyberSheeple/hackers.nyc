@@ -1,7 +1,3 @@
-/**
- * Matrix rain bento
- */
-
 import { throttledRaf } from "../../utils.js";
 
 const CHARS = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ01";

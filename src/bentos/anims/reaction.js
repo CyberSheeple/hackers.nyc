@@ -1,7 +1,3 @@
-/**
- * Reaction-diffusion (Gray-Scott) bento
- */
-
 import { lerpColor, CYAN, MAGENTA, throttledRaf } from "../../utils.js";
 
 export const html = `

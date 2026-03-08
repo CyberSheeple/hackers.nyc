@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Bento smoke tests — verify each used bento loads and runs without throwing
- */
-
 import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -15,7 +11,6 @@ function assert(cond, msg) {
   if (!cond) throw new Error(msg);
 }
 
-/** Mock canvas for Node — avoids createImageData(0,0) and provides required 2d context */
 function createMockCanvas(w = 64, h = 64) {
   const id = { data: new Uint8ClampedArray(w * h * 4), width: w, height: h };
   return {
@@ -49,7 +44,6 @@ function createMockCanvas(w = 64, h = 64) {
   };
 }
 
-/** Mock requestAnimationFrame — async to avoid stack overflow, supports cancel */
 const pending = new Map();
 let nextId = 0;
 const origRaf = globalThis.requestAnimationFrame;

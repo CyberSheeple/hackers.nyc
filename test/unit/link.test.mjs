@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Unit tests for src/bentos/link.js
- */
-
 import { test, describe } from "node:test";
 import assert from "node:assert";
 import { renderLink } from "../../src/bentos/link.js";

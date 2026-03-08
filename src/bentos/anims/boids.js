@@ -1,7 +1,3 @@
-/**
- * Boids / flocking bento
- */
-
 import { CYAN, throttledRaf } from "../../utils.js";
 
 export const html = `

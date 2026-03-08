@@ -2,7 +2,7 @@
   "name": "hackers.nyc",
   "type": "module",
   "private": true,
-  "description": "CTF study group — hackers.nyc",
+  "description": "hackers.nyc",
   "scripts": {
     "test": "npm run test:unit && npm run test:smoke && npm run test:bentos && npm run test:e2e",
     "test:unit": "node --test test/unit/*.test.mjs",

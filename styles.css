@@ -1,9 +1,4 @@
-/* ============================================
-   hackers.nyc — CTF Study Group
-   ============================================ */
-
 :root {
-  /* Colors */
   --bg-dark: #0a0a0f;
   --bg-navy: #0d1117;
   --neon-cyan: #00f5ff;
@@ -13,20 +8,16 @@
   --text-dim: rgba(255, 255, 255, 0.6);
   --text-bright: #ffffff;
 
-  /* Glow */
   --glow-cyan: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
   --glow-magenta: 0 0 10px var(--neon-magenta), 0 0 20px var(--neon-magenta);
   --glow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
 
-  /* Typography */
   --font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
 
-  /* Spacing */
   --card-gap: 0.75rem;
   --container-max: 960px;
 }
 
-/* Reset & base */
 *,
 *::before,
 *::after {
@@ -48,10 +39,6 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-
-/* ============================================
-   Background layers
-   ============================================ */
 
 .bg-grid {
   position: fixed;
@@ -88,9 +75,46 @@ body {
   z-index: 2;
 }
 
-/* ============================================
-   HUD overlay
-   ============================================ */
+.decrypt-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(20, 0, 0, 0.95) 0%, rgba(10, 0, 0, 0.9) 100%);
+  border-bottom: 1px solid rgba(255, 0, 64, 0.4);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.decrypt-progress.visible {
+  display: flex;
+}
+
+.decrypt-progress-label {
+  padding: 0.35rem 1rem 0.25rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: #ff0040;
+  text-shadow: 0 0 8px #ff0040;
+  text-align: center;
+}
+
+.decrypt-progress-track {
+  width: 100%;
+  height: 4px;
+  background: rgba(30, 0, 0, 0.95);
+  overflow: hidden;
+}
+
+.decrypt-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #6b0000, #ff0040);
+  box-shadow: 0 0 8px #ff0040, 0 0 16px rgba(255, 0, 64, 0.5);
+  transition: width 0.12s ease-out;
+}
 
 .hud {
   position: fixed;
@@ -145,7 +169,6 @@ body {
   color: var(--text-dim);
 }
 
-/* Flicker animation for "SECURE" */
 .flicker {
   animation: flicker 3s ease-in-out infinite;
 }
@@ -158,10 +181,6 @@ body {
   98% { opacity: 1; }
 }
 
-/* ============================================
-   Main container
-   ============================================ */
-
 .container {
   position: relative;
   z-index: 5;
@@ -169,10 +188,6 @@ body {
   margin: 0 auto;
   padding: 5rem 1.5rem 2rem;
 }
-
-/* ============================================
-   Hero section
-   ============================================ */
 
 .hero {
   margin-bottom: 2.5rem;
@@ -205,7 +220,6 @@ body {
   50% { opacity: 0; }
 }
 
-/* Password prompt — cmdline retro */
 .passwd-prompt {
   display: none;
   align-items: center;
@@ -260,10 +274,6 @@ body {
   display: block;
 }
 
-/* ============================================
-   Bento grid
-   ============================================ */
-
 .bento {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -287,7 +297,6 @@ body {
   }
 }
 
-/* Card base */
 .bento-card {
   position: relative;
   display: flex;
@@ -332,7 +341,6 @@ body {
   opacity: 1;
 }
 
-/* Data bento (non-link, display only) */
 .bento-card--data {
   flex-direction: column;
   align-items: flex-start;
@@ -420,7 +428,6 @@ body {
   color: var(--neon-blue);
 }
 
-/* Fractal bento (canvas fill) */
 .bento-card--fractal {
   padding: 0;
   overflow: hidden;
@@ -446,7 +453,6 @@ body {
   z-index: 1;
 }
 
-/* Bento layout — slot-based spanning (edit src/layout.js) */
 .bento-slot {
   min-width: 0;
   display: flex;
@@ -471,7 +477,6 @@ body {
 .bento-slot.row-span-3 { grid-row: span 3; }
 .bento-slot.row-span-4 { grid-row: span 4; }
 
-/* Card size variants (legacy — prefer layout.js) */
 .bento-card--wide {
   grid-column: span 2;
 }
@@ -485,7 +490,6 @@ body {
   grid-row: span 2;
 }
 
-/* Subpage description bento (full-width, top) */
 .bento-card--desc {
   grid-column: 1 / -1;
   height: 140px;
@@ -514,7 +518,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Link card: description in card, hover (desktop) or always (mobile) */
 .bento-card--link {
   flex-wrap: wrap;
   align-content: center;
@@ -543,8 +546,6 @@ body {
   }
 }
 
-/* Toolz filter buttons */
-/* Toolz page: allow filter row to shrink (cards keep min-height) */
 body[data-page="toolz"] .bento {
   grid-auto-rows: minmax(0, auto);
 }
@@ -610,7 +611,6 @@ body[data-page="toolz"] .bento {
   }
 }
 
-/* Corner brackets (HUD frames) */
 .card-corner {
   position: absolute;
   width: 12px;
@@ -655,7 +655,6 @@ body[data-page="toolz"] .bento {
   border-right-width: 1px;
 }
 
-/* Card label (corner index) */
 .card-label {
   position: absolute;
   top: 8px;
@@ -665,7 +664,6 @@ body[data-page="toolz"] .bento {
   opacity: 0.7;
 }
 
-/* Card content */
 .card-prefix {
   color: var(--neon-cyan);
   margin-right: 0.5rem;
@@ -675,10 +673,6 @@ body[data-page="toolz"] .bento {
 .card-text {
   text-transform: lowercase;
 }
-
-/* ============================================
-   Glitch effect (triggered by JS)
-   ============================================ */
 
 .bento-card.glitch .card-text {
   animation: glitch 0.3s ease-out;
@@ -711,10 +705,6 @@ body[data-page="toolz"] .bento {
   }
 }
 
-/* ============================================
-   Accessibility: reduced motion
-   ============================================ */
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -737,10 +727,6 @@ body[data-page="toolz"] .bento {
     opacity: 0.3;
   }
 }
-
-/* ============================================
-   Mobile: simplify on small screens
-   ============================================ */
 
 @media (max-width: 479px) {
   .hud {

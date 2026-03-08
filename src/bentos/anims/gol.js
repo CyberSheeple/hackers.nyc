@@ -1,7 +1,3 @@
-/**
- * Conway's Game of Life bento
- */
-
 import { CYAN, throttledRaf } from "../../utils.js";
 
 export const html = `

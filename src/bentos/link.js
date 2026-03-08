@@ -8,6 +8,6 @@ export function renderLink(link, index, options = {}) {
     <span class="card-corner card-corner--bl"></span><span class="card-corner card-corner--br"></span>
     <span class="card-label">[${label}]</span>
     <span class="card-prefix">&gt;</span>
-    <span class="card-text"> ssh ${link.name}</span>
+    <span class="card-text">${link.name}</span>
   </a>`;
 }

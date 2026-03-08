@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * Unit tests for src/layout.js
- */
-
 import { test, describe } from "node:test";
 import assert from "node:assert";
 import { readFileSync } from "node:fs";
@@ -100,7 +96,7 @@ describe("loadConfig", () => {
     const config = await loadConfig();
     const pages = [
       "index", "nodes", "patches", "cipher", "inject", "reversing", "hive", "toolz",
-      "encoding", "crypto", "web", "forensics", "stego", "network", "fuzz", "misc"
+      "encoding", "crypto", "forensics", "stego", "network", "fuzz", "misc"
     ];
     for (const p of pages) {
       assert.ok(config[p], `Missing ${p}. Run 'npm run encrypt-config' to regenerate config.json from secret.json.`);

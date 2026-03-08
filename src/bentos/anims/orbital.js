@@ -1,7 +1,3 @@
-/**
- * Orbital trails bento
- */
-
 import { CYAN, MAGENTA, throttledRaf } from "../../utils.js";
 
 export const html = `

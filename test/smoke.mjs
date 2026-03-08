@@ -1,12 +1,4 @@
 #!/usr/bin/env node
-/**
- * Smoke test — validates config and optionally checks the app loads
- *
- * Usage:
- *   npm run test              — validate config + HTML structure
- *   SERVER_URL=http://localhost:8888 npm run test  — also fetch and verify app
- */
-
 import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -37,7 +29,7 @@ function testConfig() {
     assert(Array.isArray(config[page].layout), `Page ${page} missing layout array`);
   }
 
-  assert(config.index.categories?.length === 7, "Index should have 7 categories");
+  assert(config.index.categories?.length === 14, "Index should have 14 categories");
   assert(config.index.heroTitle, "Index missing heroTitle");
 
   console.log("✓ Config valid");
